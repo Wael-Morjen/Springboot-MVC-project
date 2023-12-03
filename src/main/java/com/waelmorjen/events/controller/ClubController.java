@@ -3,9 +3,11 @@ package com.waelmorjen.events.controller;
 import com.waelmorjen.events.dto.ClubDto;
 import com.waelmorjen.events.models.Club;
 import com.waelmorjen.events.service.ClubService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,6 +32,13 @@ public class ClubController {
         return "clubs-list";
     }
 
+    @GetMapping("/clubs/{clubId}")
+    public String clubDetails(@PathVariable("clubId") Long clubId, Model model) {
+        ClubDto clubDto = clubService.findClubById(clubId);
+        model.addAttribute("club", clubDto);
+        return "clubs-detail";
+    }
+
     @GetMapping("/clubs/new")
     public String createClubForm(Model model) {
         Club club = new Club();
@@ -38,14 +47,22 @@ public class ClubController {
     }
 
     @PostMapping("/clubs/new")
-    public String saveClub(@ModelAttribute("club") Club club) {
-        clubService.saveClub(club);
+    public String saveClub(
+            @Valid @ModelAttribute("club") ClubDto clubDto,
+            BindingResult result,
+            Model model
+    ) {
+        if (result.hasErrors()){
+            model.addAttribute("club", clubDto);
+            return "clubs-create";
+        }
+        clubService.saveClub(clubDto);
         return "redirect:/clubs";
     }
 
     @GetMapping("/clubs/{clubId}/edit")
-    public String editClubForm(@PathVariable("clubId") long clubId, Model model) {
-        ClubDto club = clubService.findById(clubId);
+    public String editClubForm(@PathVariable("clubId") Long clubId, Model model) {
+        ClubDto club = clubService.findClubById(clubId);
         model.addAttribute("club", club);
         return "clubs-edit";
 
@@ -54,8 +71,12 @@ public class ClubController {
     @PostMapping("/clubs/{clubId}/edit")
     public String updateClub(
             @PathVariable("clubId") Long clubId,
-            @ModelAttribute("club") ClubDto club
+            @Valid @ModelAttribute("club") ClubDto club,
+            BindingResult result
     ) {
+        if (result.hasErrors()) {
+            return "clubs-edit";
+        }
         club.setId(clubId);
         clubService.updateClub(club);
         return "redirect:/clubs";
