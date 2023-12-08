@@ -6,8 +6,9 @@ import com.waelmorjen.events.models.Event;
 import com.waelmorjen.events.repository.ClubRepository;
 import com.waelmorjen.events.repository.EventRepository;
 import com.waelmorjen.events.service.EventService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EventServiceImpl implements EventService {
 
     private EventRepository eventRepository;
