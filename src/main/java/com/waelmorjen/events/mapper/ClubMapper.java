@@ -3,6 +3,10 @@ package com.waelmorjen.events.mapper;
 import com.waelmorjen.events.dto.ClubDto;
 import com.waelmorjen.events.models.Club;
 
+import java.util.stream.Collectors;
+
+import static com.waelmorjen.events.mapper.EventMapper.mapToEventDto;
+
 public class ClubMapper {
     public static Club mapToClub(ClubDto club) {
         Club clubDto = Club.builder()
@@ -24,6 +28,7 @@ public class ClubMapper {
                 .content(club.getContent())
                 .createdOn(club.getCreatedOn())
                 .updatedOn(club.getUpdatedOn())
+                .events(club.getEvents().stream().map((event -> mapToEventDto(event))).collect(Collectors.toList()))
                 .build();
         return clubDto;
     }
