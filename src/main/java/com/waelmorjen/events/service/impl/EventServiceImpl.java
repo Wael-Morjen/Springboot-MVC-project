@@ -8,6 +8,8 @@ import com.waelmorjen.events.repository.EventRepository;
 import com.waelmorjen.events.service.EventService;
 import org.springframework.stereotype.Service;
 
+import static com.waelmorjen.events.mapper.EventMapper.mapToEvent;
+
 @Service
 public class EventServiceImpl implements EventService {
 
@@ -22,21 +24,8 @@ public class EventServiceImpl implements EventService {
     @Override
     public void createEvent(Long clubId, EventDto eventDto) {
         Club club = clubRepository.findById(clubId).get();
-        Event event =mapToEvent(eventDto);
+        Event event = mapToEvent(eventDto);
         event.setClub(club);
         eventRepository.save(event);
-    }
-
-    private Event mapToEvent(EventDto eventDto) {
-        return Event.builder()
-                .id(eventDto.getId())
-                .name(eventDto.getName())
-                .startTime(eventDto.getStartTime())
-                .endTime(eventDto.getEndTime())
-                .type(eventDto.getType())
-                .photoUrl(eventDto.getPhotoUrl())
-                .createdOn(eventDto.getCreatedOn())
-                .updatedOn(eventDto.getUpdatedOn())
-                .build();
     }
 }
