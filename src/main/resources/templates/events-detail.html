@@ -31,7 +31,7 @@
                         <h2 class="card-title">About this event</h2>
                         <p class="card-text" th:text="${event.type}"></p>
                         <a class="btn btn-danger">Delete</a>
-                        <a class="btn btn-warning">Edit</a>
+                        <a class="btn btn-warning" th:href="@{/events/{eventId}/edit(eventId=${event.id})}">Edit</a>
                     </div>
                 </div>
             </div>
