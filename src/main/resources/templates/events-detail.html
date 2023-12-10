@@ -30,7 +30,7 @@
                         <div class="small text-muted" th:text="${event.createdOn}"></div>
                         <h2 class="card-title">About this event</h2>
                         <p class="card-text" th:text="${event.type}"></p>
-                        <a class="btn btn-danger">Delete</a>
+                        <a class="btn btn-danger" th:href="@{/events/{eventId}/delete(eventId=${event.id})}">Delete</a>
                         <a class="btn btn-warning" th:href="@{/events/{eventId}/edit(eventId=${event.id})}">Edit</a>
                     </div>
                 </div>
