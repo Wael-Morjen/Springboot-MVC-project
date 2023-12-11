@@ -2,7 +2,10 @@ package com.waelmorjen.events.service.impl;
 
 import com.waelmorjen.events.dto.ClubDto;
 import com.waelmorjen.events.models.Club;
+import com.waelmorjen.events.models.UserEntity;
 import com.waelmorjen.events.repository.ClubRepository;
+import com.waelmorjen.events.repository.UserRepository;
+import com.waelmorjen.events.security.SecurityUtil;
 import com.waelmorjen.events.service.ClubService;
 import org.springframework.stereotype.Service;
 
@@ -16,9 +19,11 @@ import static com.waelmorjen.events.mapper.ClubMapper.mapToClubDto;
 public class ClubServiceImpl implements ClubService {
 
     private ClubRepository clubRepository;
+    private UserRepository userRepository;
 
-    public ClubServiceImpl(ClubRepository clubRepository) {
+    public ClubServiceImpl(ClubRepository clubRepository, UserRepository userRepository) {
         this.clubRepository = clubRepository;
+        this.userRepository = userRepository;
     }
     @Override
     public List<ClubDto> findAllClubs() {
@@ -28,7 +33,10 @@ public class ClubServiceImpl implements ClubService {
 
     @Override
     public Club saveClub(ClubDto clubDto) {
+        String username = SecurityUtil.getSessionUser();
+        UserEntity user = userRepository.findByUsername(username);
         Club club = mapToClub(clubDto);
+        club.setCreatedBy(user);
         return clubRepository.save(club);
     }
 
