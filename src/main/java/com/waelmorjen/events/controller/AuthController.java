@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class AuthController {
-
     private UserService userService;
 
     public AuthController(UserService userService) {
