@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 import static com.waelmorjen.events.mapper.EventMapper.mapToEventDto;
 
 public class ClubMapper {
+
     public static Club mapToClub(ClubDto club) {
         Club clubDto = Club.builder()
                 .id(club.getId())
@@ -30,7 +31,7 @@ public class ClubMapper {
                 .createdBy(club.getCreatedBy())
                 .createdOn(club.getCreatedOn())
                 .updatedOn(club.getUpdatedOn())
-                .events(club.getEvents().stream().map((event -> mapToEventDto(event))).collect(Collectors.toList()))
+                .events(club.getEvents().stream().map((event) -> mapToEventDto(event)).collect(Collectors.toList()))
                 .build();
         return clubDto;
     }
